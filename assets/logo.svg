@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 160" width="640" height="160">
+  <rect width="640" height="160" rx="24" fill="#0D0F13"/>
+  <g transform="translate(16 16) scale(0.25)">
+    <rect width="512" height="512" rx="112" fill="#0D0F13"/>
+    <path d="M168 400 V120 H292 A82 82 0 0 1 292 284 H168" fill="none" stroke="#E8ECF2" stroke-width="52"/>
+    <rect x="290" y="318" width="82" height="82" fill="#4CC2FF"/>
+    <path d="M308 336 L354 382 M354 336 L308 382" stroke="#0D0F13" stroke-width="12" fill="none"/>
+  </g>
+  <text x="168" y="102" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="72" font-weight="700" letter-spacing="-2" fill="#E8ECF2">procly</text>
+  <rect x="168" y="130" width="40" height="5" fill="#4CC2FF"/>
+</svg>

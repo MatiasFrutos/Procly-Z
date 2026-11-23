@@ -1,0 +1,30 @@
+[package]
+name = "procly"
+version = "0.1.0"
+description = "Visor y terminador de procesos para Omarchy / Linux"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/MatiasFrutos/Procly"
+rust-version = "1.77"
+
+[lib]
+name = "procly_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+sysinfo = { version = "0.33", default-features = false, features = ["system", "user", "network", "disk"] }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"

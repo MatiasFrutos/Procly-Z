@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="112" fill="#0D0F13"/>
+  <rect x="16" y="16" width="480" height="480" rx="100" fill="none" stroke="#1E232B" stroke-width="4"/>
+  <!-- P glyph -->
+  <path d="M168 400 V120 H292 A82 82 0 0 1 292 284 H168" fill="none" stroke="#E8ECF2" stroke-width="52" stroke-linejoin="miter"/>
+  <!-- terminate marker -->
+  <rect x="290" y="318" width="82" height="82" fill="#4CC2FF"/>
+  <path d="M308 336 L354 382 M354 336 L308 382" stroke="#0D0F13" stroke-width="12" fill="none"/>
+</svg>

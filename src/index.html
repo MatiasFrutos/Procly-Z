@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es" data-theme="dark" data-accent="blue">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Procly</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <svg viewBox="0 0 512 512" width="22" height="22" aria-hidden="true">
+        <rect width="512" height="512" rx="112" class="logo-bg"/>
+        <path d="M168 400 V120 H292 A82 82 0 0 1 292 284 H168" fill="none" class="logo-p" stroke-width="52"/>
+        <rect x="290" y="318" width="82" height="82" class="logo-x"/>
+      </svg>
+      <span>Procly</span>
+    </div>
+    <nav class="nav" id="tabs">
+      <button data-tab="procs" class="on"><i data-icon="list"></i><span data-i18n="tab.procs"></span></button>
+      <button data-tab="perf"><i data-icon="cpu"></i><span data-i18n="tab.perf"></span></button>
+      <button data-tab="net"><i data-icon="globe"></i><span data-i18n="tab.net"></span></button>
+      <button data-tab="disks"><i data-icon="disk"></i><span data-i18n="tab.disks"></span></button>
+      <button data-tab="settings"><i data-icon="sliders"></i><span data-i18n="tab.settings"></span></button>
+    </nav>
+    <button id="pause" class="live" title="">
+      <i class="pulse"></i><span id="liveText"></span><i class="live-ic" data-icon="pause"></i>
+    </button>
+  </aside>
+
+  <div class="main">
+    <!-- ───────── Procesos ───────── -->
+    <section class="view on" data-view="procs">
+      <div class="tiles">
+        <div class="tile"><div class="t-k" data-i18n="cpu">CPU</div><div class="t-v" id="tCpu">0%</div><div class="t-s" id="tCpuS"></div><canvas id="spCpu"></canvas></div>
+        <div class="tile"><div class="t-k" data-i18n="mem">Mem</div><div class="t-v" id="tMem">0%</div><div class="t-s" id="tMemS"></div><canvas id="spMem"></canvas></div>
+        <div class="tile"><div class="t-k" data-i18n="tile.procs"></div><div class="t-v" id="tProcs">0</div><div class="t-s" id="tProcsS"></div></div>
+        <div class="tile"><div class="t-k" data-i18n="tile.uptime"></div><div class="t-v" id="tUp">0</div><div class="t-s" id="tLoad"></div></div>
+      </div>
+
+      <div class="toolbar">
+        <label class="search"><i data-icon="search"></i><input id="q" type="text" autocomplete="off" spellcheck="false" data-i18n-ph="search"><kbd>/</kbd></label>
+        <div class="seg" id="mode">
+          <button data-mode="list" class="on" data-i18n="mode.list"></button>
+          <button data-mode="tree" data-i18n="mode.tree"></button>
+          <button data-mode="group" data-i18n="mode.group"></button>
+        </div>
+        <div class="select" id="fUser"></div>
+        <div class="select" id="fState"></div>
+        <div class="select" id="fCpu"></div>
+        <div class="select" id="fMem"></div>
+        <button id="clearF" class="chip-btn" hidden><i data-icon="x" data-size="14"></i><span data-i18n="f.clear"></span></button>
+        <span class="grow"></span>
+        <button id="togglePanel" class="icon-btn" title=""><i data-icon="panel" data-size="18"></i></button>
+      </div>
+
+      <div class="split">
+        <div class="card table">
+          <div class="thead" id="thead">
+            <div data-k="name" class="c-name" data-i18n="col.name"></div>
+            <div data-k="pid" class="c-pid num">PID</div>
+            <div data-k="user" class="c-user" data-i18n="col.user"></div>
+            <div data-k="status" class="c-state" data-i18n="col.state"></div>
+            <div data-k="cpu" class="c-cpu" >CPU</div>
+            <div data-k="mem" class="c-mem" data-i18n="col.mem"></div>
+            <div data-k="io" class="c-io num">I/O</div>
+            <div class="c-act"></div>
+          </div>
+          <main id="list" class="list" tabindex="0"><div id="spacer"><div id="rows"></div></div></main>
+          <div class="tfoot"><span id="count"></span><span class="keys" id="keys"></span></div>
+        </div>
+        <aside id="panel" class="card panel"></aside>
+      </div>
+    </section>
+
+    <!-- ───────── Rendimiento ───────── -->
+    <section class="view" data-view="perf">
+      <h1 data-i18n="tab.perf"></h1>
+      <div class="grid">
+        <div class="card pad wide">
+          <div class="card-h"><span data-i18n="perf.cpu"></span><b id="pCpu"></b></div>
+          <canvas id="chCpu"></canvas>
+        </div>
+        <div class="card pad">
+          <div class="card-h"><span data-i18n="perf.mem"></span><b id="pMem"></b></div>
+          <canvas id="chMem"></canvas>
+          <div class="legend"><i class="d a"></i><span data-i18n="perf.ram"></span><i class="d b"></i><span>Swap</span></div>
+        </div>
+        <div class="card pad">
+          <div class="card-h"><span data-i18n="perf.cores"></span></div>
+          <div id="cores" class="cores"></div>
+        </div>
+        <div class="card pad">
+          <div class="card-h"><span data-i18n="perf.topCpu"></span></div>
+          <ol id="topCpu" class="toplist"></ol>
+        </div>
+        <div class="card pad">
+          <div class="card-h"><span data-i18n="perf.topMem"></span></div>
+          <ol id="topMem" class="toplist"></ol>
+        </div>
+        <div class="card pad wide">
+          <div class="card-h"><span data-i18n="perf.sys"></span></div>
+          <dl id="sysinfo" class="kv"></dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Red ───────── -->
+    <section class="view" data-view="net">
+      <h1 data-i18n="tab.net"></h1>
+      <div class="grid one">
+        <div class="card pad">
+          <div class="card-h"><span data-i18n="net.traffic"></span><b id="pNet"></b></div>
+          <canvas id="chNet"></canvas>
+          <div class="legend"><i class="d a"></i><span data-i18n="net.down"></span><i class="d b"></i><span data-i18n="net.up"></span></div>
+        </div>
+        <div class="card pad"><div id="ifaces" class="tbl"></div></div>
+      </div>
+    </section>
+
+    <!-- ───────── Discos ───────── -->
+    <section class="view" data-view="disks">
+      <h1 data-i18n="tab.disks"></h1>
+      <div class="grid one"><div class="card pad"><div id="diskList"></div></div></div>
+    </section>
+
+    <!-- ───────── Ajustes ───────── -->
+    <section class="view" data-view="settings">
+      <h1 data-i18n="tab.settings"></h1>
+      <div class="settings">
+        <h3 data-i18n="set.appearance"></h3>
+        <div class="card">
+          <div class="srow col"><div class="s-t"><b data-i18n="set.theme"></b><span data-i18n="set.theme.d"></span></div>
+            <div class="themes" id="sTheme">
+              <button data-theme-opt="dark"><div class="prev dark"><i></i><i></i></div><span data-i18n="set.dark"></span></button>
+              <button data-theme-opt="light"><div class="prev light"><i></i><i></i></div><span data-i18n="set.light"></span></button>
+              <button data-theme-opt="system"><div class="prev system"><i></i><i></i></div><span data-i18n="set.system"></span></button>
+            </div></div>
+          <div class="srow"><div class="s-t"><b data-i18n="set.accent"></b><span data-i18n="set.accent.d"></span></div>
+            <div class="swatches" id="sAccent">
+              <button data-accent="blue"></button><button data-accent="green"></button><button data-accent="violet"></button><button data-accent="amber"></button>
+            </div></div>
+          <div class="srow"><div class="s-t"><b data-i18n="set.scale"></b><span data-i18n="set.scale.d"></span></div><div class="select" id="sScale"></div></div>
+          <div class="srow"><div class="s-t"><b data-i18n="set.density"></b><span data-i18n="set.density.d"></span></div>
+            <div class="seg" id="sDensity"><button data-d="28" data-i18n="set.normal"></button><button data-d="24" data-i18n="set.compact"></button></div></div>
+        </div>
+
+        <h3 data-i18n="set.general"></h3>
+        <div class="card">
+          <div class="srow"><div class="s-t"><b data-i18n="set.lang"></b><span data-i18n="set.lang.d"></span></div><div class="select" id="sLang"></div></div>
+          <div class="srow"><div class="s-t"><b data-i18n="set.interval"></b><span data-i18n="set.interval.d"></span></div><div class="select" id="sInterval"></div></div>
+          <div class="srow"><div class="s-t"><b data-i18n="set.confirm"></b><span data-i18n="set.confirm.d"></span></div><button class="switch" id="sConfirm" role="switch"><i></i></button></div>
+          <div class="srow"><div class="s-t"><b data-i18n="set.panel"></b><span data-i18n="set.panel.d"></span></div><button class="switch" id="sPanel" role="switch"><i></i></button></div>
+        </div>
+
+        <h3 data-i18n="set.about"></h3>
+        <div class="card"><div class="srow"><div class="s-t"><b>Procly 0.1.0</b><span data-i18n="set.version"></span></div></div></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div id="modal" class="backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="m-icon" id="mIcon"></div>
+    <h2 id="mTitle"></h2>
+    <p id="mText"></p>
+    <ul id="mList"></ul>
+    <p class="m-hint" id="mHint"></p>
+    <div class="m-actions">
+      <button id="btnCancel" class="btn ghost"></button>
+      <button id="btnTerm" class="btn"></button>
+      <button id="btnKill" class="btn danger"></button>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast" hidden></div>
+<div id="menu" class="menu" hidden></div>
+
+<script src="icons.js"></script>
+<script src="i18n.js"></script>
+<script src="charts.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
